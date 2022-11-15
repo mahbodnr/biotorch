@@ -65,7 +65,7 @@ class Benchmark:
                 self.layer_config["options"] = self.mode_options
 
             if self.mode not in self.mode_names:
-                raise ValueError("Mode not {} supported".format(self.mode))
+                raise ValueError("Mode not supported: {}".format(self.mode))
 
             options = models.__dict__[self.mode].__dict__
             self.model_names = sorted(name for name in options if name.islower() and not name.startswith("__")
