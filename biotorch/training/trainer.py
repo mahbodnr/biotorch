@@ -41,7 +41,7 @@ class Trainer:
         self.record_weight_ratio = metrics_config['weight_ratio']
         self.top_k = metrics_config['top_k']
         self.writer = SummaryWriter(self.logs_dir)
-        self.layer_alignment_modes = ['fa', 'usf', 'frsf', 'brsf']
+        self.layer_alignment_modes = ['fa', 'usf', 'frsf', 'brsf', 'hfa']
 
     def write_layer_alignment(self, epoch):
         if self.record_layer_alignment:
@@ -51,7 +51,7 @@ class Trainer:
                     layers_alignment = compute_angles_module(self.model)
                     self.writer.add_scalars('layer_alignment/train', layers_alignment, epoch)
                 except BaseException:
-                    pass
+                    print('Failed to apply layer alignment. Layer alignment does not support multi-gpu, usf, and brsf')
             else:
                 print('Layer alignment is not implemented for  {}'.format(self.mode))
 
