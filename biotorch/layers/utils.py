@@ -3,6 +3,7 @@ import torch.nn as nn
 import biotorch.layers.fa_constructor as fa_constructor
 import biotorch.layers.backpropagation as bp_layers
 import biotorch.layers.dfa as dfa_layers
+import biotorch.layers.hfa as hfa_layers
 
 
 def convert_layer(layer, mode, copy_weights, layer_config=None, output_dim=None):
@@ -49,6 +50,19 @@ def convert_layer(layer, mode, copy_weights, layer_config=None, output_dim=None)
                 layer.padding_mode,
                 layer_config
             )
+        elif mode == "hfa":
+            new_layer = hfa_layers.Conv2d(
+                layer.in_channels,
+                layer.out_channels,
+                layer.kernel_size,
+                layer.stride,
+                layer.padding,
+                layer.dilation,
+                layer.groups,
+                layer_bias,
+                layer.padding_mode,
+                layer_config
+            )
         elif mode == 'backpropagation':
             new_layer = bp_layers.Conv2d(
                 layer.in_channels,
@@ -62,6 +76,9 @@ def convert_layer(layer, mode, copy_weights, layer_config=None, output_dim=None)
                 layer.padding_mode,
                 layer_config
             )
+        else:
+            raise NotImplementedError("Unknown layer mode: " + mode)
+
 
     elif isinstance(layer, nn.Linear):
         if mode in ["fa", "usf", "brsf", "frsf"]:
@@ -79,6 +96,13 @@ def convert_layer(layer, mode, copy_weights, layer_config=None, output_dim=None)
                 layer_bias,
                 layer_config
             )
+        elif mode == 'hfa':
+            new_layer = hfa_layers.Linear(
+                layer.in_features,
+                layer.out_features,
+                layer_bias,
+                layer_config
+            )
         elif mode == 'backpropagation':
             new_layer = bp_layers.Linear(
                 layer.in_features,
@@ -86,6 +110,8 @@ def convert_layer(layer, mode, copy_weights, layer_config=None, output_dim=None)
                 layer_bias,
                 layer_config
             )
+        else:
+            raise NotImplementedError("Unknown layer mode: " + mode)
 
     if new_layer is not None and copy_weights:
         new_layer.weight = weight

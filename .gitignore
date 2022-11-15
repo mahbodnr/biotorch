@@ -130,3 +130,6 @@ dmypy.json
 
 # dataset directory
 data/
+
+# vscode workspace settings
+.vscode/
