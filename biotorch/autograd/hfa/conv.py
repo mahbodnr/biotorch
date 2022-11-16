@@ -36,7 +36,6 @@ class Conv2dGrad(autograd.Function):
                                                     dilation=context.dilation,
                                                     groups=context.groups)
             if context.needs_input_grad[2]:
-                raise ValueError("F")
                 grad_weight_backward = torch.nn.grad.conv2d_weight(input=grad_input,
                                                         weight_size=weight_backward.shape,
                                                         grad_output=grad_output,

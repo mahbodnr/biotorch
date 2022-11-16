@@ -49,7 +49,7 @@ class Conv2d(nn.Conv2d):
         self.type = self.layer_config["type"]
         self.init = self.options["init"]
 
-        self.weight_backward = nn.Parameter(torch.Tensor(self.weight.size()), requires_grad=False)
+        self.weight_backward = nn.Parameter(torch.Tensor(self.weight.size()), requires_grad=True)
         if self.bias is not None:
             self.bias_backward = nn.Parameter(torch.Tensor(self.bias.size()), requires_grad=False)
         else:

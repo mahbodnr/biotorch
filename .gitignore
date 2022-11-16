@@ -133,3 +133,6 @@ data/
 
 # vscode workspace settings
 .vscode/
+
+# local test file
+test_hfa.py
